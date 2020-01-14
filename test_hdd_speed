@@ -1,0 +1,23 @@
+#!/bin/sh
+
+
+test_read() {
+    RES=""
+    i=0
+    while [ $i -le $1 ];do
+        RES="${RES}:$(dd_read $2 $3)"
+        i=$(( i + 1 ))
+    done
+
+    echo $RES
+}
+
+
+dd_read(){
+    TMP=$(dd oflag=nocache,noatime if=/dev/zero of=/tmp/testfile bs=$1 count=$2 2>&1)
+    TMP=$(echo $TMP | cut -d',' -f4)
+
+    echo $TMP
+}
+
+test_read 5 100k 1k

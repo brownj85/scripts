@@ -1,0 +1,42 @@
+#!/bin/sh
+
+DEFAULT_DST_DIR="/usr/bin"
+EINSTALL_DBFILE="/var/lib/einstall/installed"
+
+if [ -z "$1" ];
+then
+    echo "No filename provided. Exiting"
+    exit 1
+fi
+
+SRC=$1
+SRC_NAME=$(basename "$SRC")
+
+if [ -z "$2" ];
+then
+    DST=$DEFAULT_DST_DIR/$SRC_NAME
+else
+    DST=$2/$SRC_NAME
+fi
+
+if [ "$SRC" == "$SRC_NAME" ];
+then
+    SRC="$(pwd)/$SRC_NAME"
+fi
+
+if [ -e $DST ];then
+    echo "File $DST already exists. Exiting"
+    exit 1
+fi
+
+echo "$SRC -> $DST"
+
+ln -s $SRC $DST
+
+if [ $? -ne 0 ];
+then
+    echo "Failed to create symlink $DST. Exiting"
+    exit 1
+fi
+
+echo "$SRC:$DST" >> $EINSTALL_DBFILE

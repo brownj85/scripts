@@ -1,0 +1,9 @@
+#!/bin/sh
+
+KEYFILE=${HOME}/gdrive/pass/pword.kdbx
+
+drive pull -depth 2 -quiet $KEYFILE
+
+keepassxc $KEYFILE
+
+drive push -depth 2 -quiet $KEYFILE

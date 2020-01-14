@@ -1,0 +1,3 @@
+#!/bin/sh
+
+lxc exec ucontainer --env DISPLAY=:0 -- su ubuntu -c "cd && ${1}"

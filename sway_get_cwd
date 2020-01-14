@@ -1,0 +1,13 @@
+#!/bin/sh
+
+pid=$(swaymsg -t get_tree | jq '.. | select(.type?) | select(.type=="con") | select(.focused==true).pid' )
+
+cwd=$(pwdx `pgrep --newest --parent ${pid}` | cut -d' ' -f2)
+
+if [ -n "$cwd" -a -r $cwd ];
+then
+	echo $cwd
+    exit 0
+fi
+
+echo $HOME

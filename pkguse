@@ -1,0 +1,14 @@
+#!/bin/sh
+
+PKGNAME=$(echo $1 | cut -d'/' -f2 | cut -d'-' -f1)
+USE=$(echo $@ | cut -d' ' -f1-)
+
+touch "/etc/portage/package.use/$PKGNAME"
+
+if [ $? != 0 ];
+then
+	echo "Failed to create use file"
+	exit 1
+fi;
+
+echo "$USE" >> "/etc/portage/package.use/$PKGNAME"

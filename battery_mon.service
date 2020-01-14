@@ -1,0 +1,17 @@
+#!/sbin/openrc-run
+
+
+start()
+{
+    echo "Starting battery_mon script"
+    /usr/bin/battery_mon &
+    echo $! > /tmp/battery_mon.run
+}
+
+stop()
+{
+    echo "stopping battery_mon script"
+    kill $(cat /tmp/battery_mon.run)
+    eend $?
+}
+

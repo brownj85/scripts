@@ -1,0 +1,5 @@
+#!/bin/sh
+
+lxc start ucontainer
+lxc exec ucontainer --env DISPLAY=:0 -- su ubuntu -c "cd && steam"
+lxc stop ucontainer

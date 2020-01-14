@@ -1,0 +1,46 @@
+#!/bin/sh
+
+BATTERY_DIR="/sys/class/power_supply/BAT0"
+AC_DIR="/sys/class/power_supply/AC"
+
+LOW_THRESHOLD=15
+CRIT_THRESHOLD=5
+SLEEP_TIME=60
+LONG_SLEEP_TIME=300
+
+not_plugged_in(){
+    return $(cat $AC_DIR/online)
+}
+
+get_pct(){
+    return $(cat $BATTERY_DIR/capacity)
+}
+
+notify_low(){
+    notify-send "Battery Low"
+}
+
+notify_crit(){
+    notify-send "Battery Critical"
+}
+
+loop_body(){
+    SLEEP=$SLEEP_TIME
+    if not_plugged_in ;then
+        get_pct
+        PCT=$?
+        echo $PCT
+        if [ $PCT -lt $CRIT_THRESHOLD ];then notify_crit
+        elif [ $PCT -lt $LOW_THRESHOLD ]; then
+            notify_low
+            SLEEP=$LONG_SLEEP_TIME
+        fi
+    fi
+}
+
+while true;
+do
+    SLEEP=$SLEEP_TIME
+    loop_body
+    sleep $SLEEP
+done

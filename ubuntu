@@ -1,0 +1,14 @@
+#!/bin/sh
+
+if [ -z "$1" ];then
+    LOGIN=ubuntu
+else
+    LOGIN=$1
+fi
+
+lxc start ucontainer 
+
+lxc exec ucontainer --env TERM=xterm --env DISPLAY=:0 -- \
+    /bin/login -p -f ${LOGIN}
+
+lxc stop ucontainer

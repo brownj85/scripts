@@ -1,0 +1,9 @@
+#!/bin/sh
+
+get_field(){
+    echo $1
+    echo $2
+    echo ${$3}
+}
+
+echo $(get_field one two three four 2)

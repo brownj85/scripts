@@ -1,0 +1,20 @@
+#!/bin/sh
+
+mkdir -p $1/dev
+mount --rbind /dev $1/dev
+mount --make-rslave $1/dev
+
+mkdir -p $1/sys
+mount --rbind /sys $1/sys
+mount --make-rslave $1/sys
+
+mkdir -p $1/proc
+mount -t proc /proc $1/proc
+
+cp --dereference /etc/resolv.conf $1/etc/resolv.conf
+
+chroot $1 /bin/sh
+
+umount $1/dev
+umount $1/sys
+umount $1/proc
